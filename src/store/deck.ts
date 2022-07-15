@@ -3,11 +3,11 @@ import { defineStore } from 'pinia'
 export const useDeckStore = defineStore({
     id: 'deck-store',
     state: () => ({
-        hidden: [],
         deck: []
     }),
     actions: {
         buildDeck() {
+            // Card combinations:
             const values = ['A', 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K']
             const types = ['C', 'D', 'H', 'S']
 
@@ -17,7 +17,7 @@ export const useDeckStore = defineStore({
                     this.deck.push({
                         value,
                         type,
-                        card: `${value}-${type}` // A-C -> K-C, A-D -> K-D, etc.
+                        name: `${value}-${type}` // A-C -> K-C, A-D -> K-D, etc.
                     })
                 })
             })
@@ -25,6 +25,10 @@ export const useDeckStore = defineStore({
         shuffleDeck() {
             // Shuffle the deck
             this.deck.sort(() => Math.random() - 0.5)
+        },
+        takeCard() {
+            // Take a card from the deck
+            return this.deck.pop()
         }
     },
     getters: {
@@ -47,6 +51,16 @@ export const useDeckStore = defineStore({
             // Checks if the card is an ace and returns true/false
             return (card) => {
                 return card.value === 'A'
+            }
+        },
+        reduceAce: () => {
+            // Reduces aces if they are over 21
+            return (playerSum, playerAceCount) => {
+                while (playerSum > 21 && playerAceCount > 0) {
+                    playerSum -= 10
+                    playerAceCount -= 1
+                }
+                return playerSum
             }
         }
     }
