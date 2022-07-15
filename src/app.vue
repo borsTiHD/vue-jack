@@ -1,11 +1,11 @@
 <template>
-	<Body :class="[{ dark: isDarkMode }, isDarkMode ? 'bg-body-bg' : 'bg-white']">
-		<div class="bg-fixed bg-bottom">
-			<main>
-				<NuxtPage />
-			</main>
-		</div>
-	</Body>
+    <Body :class="[{ dark: isDarkMode }, isDarkMode ? 'bg-body-bg' : 'bg-white']">
+        <div class="bg-fixed bg-bottom">
+            <main>
+                <NuxtPage />
+            </main>
+        </div>
+    </Body>
 </template>
 
 <script setup>

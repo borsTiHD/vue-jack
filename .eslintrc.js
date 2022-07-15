@@ -43,12 +43,12 @@ module.exports = {
 
         // Vue specific rules
         'vue/multi-word-component-names': ['error', {
-            ignores: ['default', 'index', '[name]', 'teamspeak', 'projects', 'impressum']
+            ignores: ['default', 'index', 'game']
         }],
         'vue/max-attributes-per-line': 'off',
         'vue/singleline-html-element-content-newline': 'off',
         'vue/multiline-html-element-content-newline': 'off',
-        'vue/html-indent': ['error', 'tab'],
+        'vue/html-indent': ['error', 4],
         'vue/no-v-html': 'off'
     }
 }
