@@ -54,16 +54,6 @@ export const useDeckStore = defineStore({
             return (card) => {
                 return card.value === 'A'
             }
-        },
-        reduceAce: () => {
-            // Reduces aces if they are over 21
-            return (playerSum, playerAceCount) => {
-                while (playerSum > 21 && playerAceCount > 0) {
-                    playerSum -= 10
-                    playerAceCount -= 1
-                }
-                return playerSum
-            }
         }
     }
 })

@@ -74,6 +74,17 @@ export const useGameStore = defineStore({
                 return count
             }
         },
+        reduceAce: () => {
+            // Reduces aces if they are over 21
+            // TODO: Implement + make it dynamic with deck as an argument instead of using fix numbers
+            return (playerSum, playerAceCount) => {
+                while (playerSum > 21 && playerAceCount > 0) {
+                    playerSum -= 10
+                    playerAceCount -= 1
+                }
+                return playerSum
+            }
+        },
         calculateDeckSum: () => {
             // Calculates the sum of the given deck
             return (deck) => {
