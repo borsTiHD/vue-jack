@@ -14,23 +14,36 @@ export const useGameStore = defineStore({
     }),
     actions: {
         startGame() {
-            this.$reset() // Resetting the game
+            // Resetting cards
+            this.dealer.hidden = []
+            this.dealer.cards = []
+            this.player.cards = []
 
             // Creating a Deck
             const deckStore = useDeckStore()
-            deckStore.$reset()
             deckStore.buildDeck() // Build deck
             Array.from({ length: 3 }, () => deckStore.shuffleDeck()) // Shuffle deck x times
+
+            // TODO: Delete me
             console.log('Generated deck:', deckStore.getDeck)
+            console.log('Generated deck size:', deckStore.getDeck.length)
 
-            // Deal cards to the dealer
-            this.dealer.hidden = deckStore.takeCard() // Set hidden card in store
+            // Deal cards to the dealer until he have more than 17
+            this.dealer.hidden.push(deckStore.takeCard()) // Set hidden card in store
+            while (this.getDealerSum < 17) {
+                this.dealer.cards.push(deckStore.takeCard()) // Add card to dealer's hand
+            }
 
-            console.log('Dealer card 1:', this.dealer.hidden)
-            console.log('Dealer sum:', this.calculateDeckSum([...this.dealer.hidden, ...this.dealer.cards]))
+            // TODO: Delete me
+            console.log('Dealer cards:', this.getDealerCards)
+            console.log('Dealer sum:', this.getDealerSum)
+
+            // Deal two cards to the player
+            Array.from({ length: 2 }, () => this.player.cards.push(deckStore.takeCard()))
         },
         hit() {
-            console.log('Hit')
+            const deckStore = useDeckStore()
+            this.player.cards.push(deckStore.takeCard())
         },
         stay() {
             console.log('Stay')
@@ -38,8 +51,11 @@ export const useGameStore = defineStore({
     },
     getters: {
         getDealerHidden: (state) => state.dealer.hidden,
-        getDealerCards: (state) => state.dealer.cards,
+        getDealerOtherCards: (state) => state.dealer.cards,
+        getDealerCards() { return [...this.getDealerHidden, ...this.getDealerOtherCards] },
         getPlayerCards: (state) => state.player.cards,
+        getDealerSum() { return this.calculateDeckSum(this.getDealerCards) },
+        getPlayerSum() { return this.calculateDeckSum(this.getPlayerCards) },
         canHit(state) {
             // Allows the player (you) to draw while yourSum <= 21 - Returns true/false
             return this.calculateDeckSum(state.player.cards) <= 21
@@ -47,6 +63,7 @@ export const useGameStore = defineStore({
         aceCount: () => {
             // Returns the number of aces in the given deck
             return (deck) => {
+                if (!deck || !Array.isArray(deck) || deck.length === 0) return 0
                 const deckStore = useDeckStore()
                 let count = 0
                 deck.forEach((card) => {
@@ -60,6 +77,7 @@ export const useGameStore = defineStore({
         calculateDeckSum: () => {
             // Calculates the sum of the given deck
             return (deck) => {
+                if (!deck || !Array.isArray(deck) || deck.length === 0) return 0
                 const deckStore = useDeckStore()
                 let sum = 0
                 deck.forEach((card) => {
