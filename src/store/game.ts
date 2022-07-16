@@ -33,11 +33,6 @@ export const useGameStore = defineStore({
             // Deal two cards to the dealer
             this.dealer.cards.push(deckStore.takeCard()) // Set first card hidden in store
             this.dealer.cards.push(deckStore.flipCard(deckStore.takeCard())) // Set second card visible in store
-
-            // Deal cards to the dealer until he have more than 17
-            while (this.getDealerRealSum < 17) {
-                this.dealer.cards.push(deckStore.flipCard(deckStore.takeCard())) // Add card to dealer's hand
-            }
         },
         hit() {
             if (this.canHit) {
@@ -46,11 +41,17 @@ export const useGameStore = defineStore({
             }
         },
         stay() {
+            // Deal cards to the dealer until he have more than 17
+            const deckStore = useDeckStore()
+            while (this.getDealerRealSum < 17) {
+                this.dealer.cards.push(deckStore.flipCard(deckStore.takeCard())) // Add card to dealer's hand
+            }
+
+            // Game ends
             this.player.stay = true
             this.gameEnded = true
 
             // Flip every hidden card from dealer
-            const deckStore = useDeckStore()
             this.dealer.cards.forEach((card) => {
                 if (card.hidden) {
                     deckStore.flipCard(card)
