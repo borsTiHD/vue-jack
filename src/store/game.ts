@@ -15,9 +15,11 @@ export const useGameStore = defineStore({
     }),
     actions: {
         startGame() {
-            // Resetting cards
+            // Resetting the game
             this.dealer.cards = []
             this.player.cards = []
+            this.player.stay = false
+            this.gameEnded = false
 
             // Creating a Deck
             const deckStore = useDeckStore()
@@ -60,7 +62,8 @@ export const useGameStore = defineStore({
         getDealerSum() { return this.calculateDeckSum(this.getDealerCards) }, // Dealer's sum without hidden cards
         getDealerRealSum() { return this.calculateDeckSum(this.getDealerCards, false) }, // Dealer's real sum with all cards
         getPlayerSum() { return this.calculateDeckSum(this.getPlayerCards) },
-        checkWin() {
+        gameRunning: (state) => !state.gameEnded,
+        getGameResults() {
             const dealerSum = this.getDealerSum
             const playerSum = this.getPlayerSum
 
@@ -68,44 +71,45 @@ export const useGameStore = defineStore({
             if (playerSum > 21) {
                 return {
                     win: false,
-                    message: 'You Loose! You have more than 21!',
+                    message: 'You Loose! You have more than 21! 🤪',
                     dealerSum,
                     playerSum
                 }
             } else if (dealerSum > 21) {
                 return {
                     win: true,
-                    message: 'You win! Dealer has more than 21!',
+                    message: 'You win! Dealer has more than 21! 🥳🎉',
                     dealerSum,
                     playerSum
                 }
             } else if (playerSum === dealerSum) {
                 return {
                     win: false,
-                    message: 'Tie! Both have the same sum!',
+                    message: 'Tie! Both have the same sum! 🤔',
                     dealerSum,
                     playerSum
                 }
             } else if (playerSum > dealerSum) {
                 return {
                     win: true,
-                    message: 'You win! You have more than the dealer!',
+                    message: 'You win! You have more than the dealer! 🥳🎉',
                     dealerSum,
                     playerSum
                 }
             } else if (playerSum < dealerSum) {
                 return {
                     win: false,
-                    message: 'You Loose! You have less than the dealer!',
+                    message: 'You Loose! You have less than the dealer! 🤡',
                     dealerSum,
                     playerSum
                 }
-            }
-            return {
-                win: false,
-                message: 'Something went wrong!',
-                dealerSum,
-                playerSum
+            } else {
+                return {
+                    win: false,
+                    message: 'Something went wrong! ⚠️',
+                    dealerSum,
+                    playerSum
+                }
             }
         },
         canHit(state) {
