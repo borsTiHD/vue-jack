@@ -32,8 +32,10 @@ export const useGameStore = defineStore({
             Array.from({ length: 2 }, () => this.player.cards.push(deckStore.flipCard(deckStore.takeCard())))
         },
         hit() {
-            const deckStore = useDeckStore()
-            this.player.cards.push(deckStore.flipCard(deckStore.takeCard()))
+            if (this.canHit) {
+                const deckStore = useDeckStore()
+                this.player.cards.push(deckStore.flipCard(deckStore.takeCard()))
+            }
         },
         stay() {
             console.log('Stay')
