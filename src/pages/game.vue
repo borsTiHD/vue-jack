@@ -13,7 +13,7 @@
                         </div>
                     </template>
                     <template #footer>
-                        <AppButton class="font-montserrat ml-2" uppercase @click="newGame">New Game</AppButton>
+                        <AppButton class="font-montserrat ml-2" @click="nextGame">Next Game</AppButton>
                     </template>
                 </AppModal>
                 <!-- Dealer -->
@@ -25,7 +25,7 @@
                         </div>
                         <div v-if="dealerCards" id="dealer-cards" class="flex flex-row mx-auto">
                             <!-- Dealer cards -->
-                            <GameCard v-for="(card, index) in dealerCards" :key="index" :card="card" :class="dealerCards.length > index + 1 ? 'mr-2' : ''" />
+                            <GameCard v-for="(card, index) in dealerCards" :key="index" :card="card" :class="dealerCards.length > index + 1 ? '-mr-16' : ''" />
                         </div>
                     </div>
                 </AppCard>
@@ -38,12 +38,12 @@
                         </div>
                         <!-- Player cards -->
                         <div v-if="playerCards" id="player-cards" class="flex flex-row mx-auto">
-                            <GameCard v-for="(card, index) in playerCards" :key="index" :card="card" :class="playerCards.length > index + 1 ? 'mr-2' : ''" />
+                            <GameCard v-for="(card, index) in playerCards" :key="index" :card="card" :class="playerCards.length > index + 1 ? '-mr-16' : ''" />
                         </div>
                         <div class="flex flex-row mt-4">
-                            <AppButton class="font-montserrat mr-2" uppercase :disabled="!playerCanHit" @click="hitMove">Hit</AppButton>
-                            <AppButton class="font-montserrat ml-2" uppercase :disabled="!gameRunning" @click="stayMove">Stay</AppButton>
-                            <AppButton v-if="!gameRunning" class="font-montserrat ml-4" uppercase @click="newGame">New Game</AppButton>
+                            <AppButton class="font-montserrat mr-2" :disabled="!playerCanHit" @click="hitMove">Hit</AppButton>
+                            <AppButton class="font-montserrat ml-2" :disabled="!gameRunning" @click="stayMove">Stay</AppButton>
+                            <AppButton v-if="!gameRunning" class="font-montserrat ml-4" @click="nextGame">Next Game</AppButton>
                         </div>
                     </div>
                 </AppCard>
@@ -104,7 +104,7 @@ watch(gameRunning, (newValue) => {
 })
 
 // Starting new game
-const newGame = () => {
+const nextGame = () => {
     showModal.value = false
     gameStore.startGame()
 }

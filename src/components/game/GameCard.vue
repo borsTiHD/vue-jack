@@ -1,9 +1,9 @@
 <template>
-    <div class="card-face">
+    <div class="card-face z-10 hover:z-20">
         <img
             :src="`/img/cards/${getCardName}.png`"
             :alt="getCardName"
-            class="card-image w-full h-48 object-cover rounded-lg drop-shadow-lg"
+            class="card-image w-full h-48 object-cover rounded-lg drop-shadow-lg transition ease-in-out duration-300 hover:-translate-y-1 hover:scale-105"
             loading="lazy"
         >
     </div>
