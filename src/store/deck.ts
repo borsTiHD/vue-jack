@@ -19,7 +19,8 @@ export const useDeckStore = defineStore({
                     this.deck.push({
                         value,
                         type,
-                        name: `${value}-${type}` // A-C -> K-C, A-D -> K-D, etc.
+                        name: `${value}-${type}`, // A-C -> K-C, A-D -> K-D, etc.
+                        hidden: true
                     })
                 })
             })
@@ -31,6 +32,16 @@ export const useDeckStore = defineStore({
         takeCard() {
             // Take a card from the deck
             return this.deck.pop()
+        },
+        flipCard(card) {
+            // Flip a card
+            card.hidden = false
+            return card
+        },
+        hideCard(card) {
+            // Hide a card
+            card.hidden = true
+            return card
         }
     },
     getters: {

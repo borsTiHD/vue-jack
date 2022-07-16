@@ -5,7 +5,6 @@ export const useGameStore = defineStore({
     id: 'game-store',
     state: () => ({
         dealer: {
-            hidden: [], // Keeps track of hidden card
             cards: []
         },
         player: {
@@ -15,7 +14,6 @@ export const useGameStore = defineStore({
     actions: {
         startGame() {
             // Resetting cards
-            this.dealer.hidden = []
             this.dealer.cards = []
             this.player.cards = []
 
@@ -29,9 +27,9 @@ export const useGameStore = defineStore({
             console.log('Generated deck size:', deckStore.getDeck.length)
 
             // Deal cards to the dealer until he have more than 17
-            this.dealer.hidden.push(deckStore.takeCard()) // Set hidden card in store
+            this.dealer.cards.push(deckStore.takeCard()) // Set first card hidden in store
             while (this.getDealerSum < 17) {
-                this.dealer.cards.push(deckStore.takeCard()) // Add card to dealer's hand
+                this.dealer.cards.push(deckStore.flipCard(deckStore.takeCard())) // Add card to dealer's hand
             }
 
             // TODO: Delete me
@@ -39,20 +37,18 @@ export const useGameStore = defineStore({
             console.log('Dealer sum:', this.getDealerSum)
 
             // Deal two cards to the player
-            Array.from({ length: 2 }, () => this.player.cards.push(deckStore.takeCard()))
+            Array.from({ length: 2 }, () => this.player.cards.push(deckStore.flipCard(deckStore.takeCard())))
         },
         hit() {
             const deckStore = useDeckStore()
-            this.player.cards.push(deckStore.takeCard())
+            this.player.cards.push(deckStore.flipCard(deckStore.takeCard()))
         },
         stay() {
             console.log('Stay')
         }
     },
     getters: {
-        getDealerHidden: (state) => state.dealer.hidden,
-        getDealerOtherCards: (state) => state.dealer.cards,
-        getDealerCards() { return [...this.getDealerHidden, ...this.getDealerOtherCards] },
+        getDealerCards: (state) => state.dealer.cards,
         getPlayerCards: (state) => state.player.cards,
         getDealerSum() { return this.calculateDeckSum(this.getDealerCards) },
         getPlayerSum() { return this.calculateDeckSum(this.getPlayerCards) },

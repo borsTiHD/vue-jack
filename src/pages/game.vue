@@ -5,30 +5,9 @@
                 <AppCard class="mt-2">
                     <div class="flex flex-col">
                         <p class="mb-2">Dealer: {{ visibleDealerSum }}</p>
-                        <div v-if="dealerHidden && dealerOtherCards" id="dealer-cards" class="flex flex-row">
-                            <!-- Hidden card -->
-                            <div v-if="dealerHidden" class="card-face back mr-2">
-                                <img
-                                    :src="`/img/cards/BACK.png`"
-                                    alt="hidden"
-                                    class="card-image w-full h-48 object-cover rounded-lg drop-shadow-lg"
-                                    loading="lazy"
-                                >
-                            </div>
-                            <!-- Remaining dealer cards -->
-                            <div
-                                v-for="(card, i) in dealerOtherCards"
-                                :key="card.name"
-                                class="card-face front"
-                                :class="dealerOtherCards.length > i + 1 ? 'mr-2' : ''"
-                            >
-                                <img
-                                    :src="`/img/cards/${card.name}.png`"
-                                    :alt="card.name"
-                                    class="card-image w-full h-48 object-cover rounded-lg drop-shadow-lg"
-                                    loading="lazy"
-                                >
-                            </div>
+                        <div v-if="dealerCards" id="dealer-cards" class="flex flex-row mx-auto">
+                            <!-- Dealer cards -->
+                            <GameCard v-for="(card, index) in dealerCards" :key="index" :card="card" :class="dealerCards.length > index + 1 ? 'mr-2' : ''" />
                         </div>
                     </div>
                 </AppCard>
@@ -36,20 +15,8 @@
                     <div class="flex flex-col">
                         <p class="mb-2">You: {{ playerSum }}</p>
                         <!-- Player cards -->
-                        <div v-if="playerCards" id="dealer-cards" class="flex flex-row">
-                            <div
-                                v-for="(card, i) in playerCards"
-                                :key="card.name"
-                                class="card-face front"
-                                :class="playerCards.length > i + 1 ? 'mr-2' : ''"
-                            >
-                                <img
-                                    :src="`/img/cards/${card.name}.png`"
-                                    :alt="card.name"
-                                    class="card-image w-full h-48 object-cover rounded-lg drop-shadow-lg"
-                                    loading="lazy"
-                                >
-                            </div>
+                        <div v-if="playerCards" id="player-cards" class="flex flex-row mx-auto">
+                            <GameCard v-for="(card, index) in playerCards" :key="index" :card="card" :class="playerCards.length > index + 1 ? 'mr-2' : ''" />
                         </div>
                         <div class="flex flex-row mt-4">
                             <AppButton class="font-montserrat mr-2" uppercase @click="hitMove">Hit</AppButton>
@@ -66,6 +33,7 @@
 import { onMounted } from 'vue'
 import AppCard from '@/components/misc/AppCard.vue'
 import AppButton from '@/components/misc/AppButton.vue'
+import GameCard from '@/components/game/GameCard.vue'
 import { useAppStore } from '~/store/app'
 import { useGameStore } from '~/store/game'
 
@@ -78,9 +46,8 @@ useHead({ title: pageTitle })
 const gameStore = useGameStore()
 
 // Dealer cards + Dealer sum (without hidden card)
-const dealerHidden = computed(() => gameStore.getDealerHidden)
-const dealerOtherCards = computed(() => gameStore.getDealerOtherCards)
-const visibleDealerSum = computed(() => gameStore.calculateDeckSum(gameStore.getDealerOtherCards))
+const dealerCards = computed(() => gameStore.getDealerCards)
+const visibleDealerSum = computed(() => gameStore.calculateDeckSum(gameStore.getDealerCards))
 
 // Player cards + Player sum
 const playerCards = computed(() => gameStore.getPlayerCards)
