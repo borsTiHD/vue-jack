@@ -26,18 +26,23 @@ export const useGameStore = defineStore({
             deckStore.buildDeck() // Build deck
             Array.from({ length: 3 }, () => deckStore.shuffleDeck()) // Shuffle deck x times
 
-            // Deal cards to the dealer until he have more than 17
+            // Deal two cards to the player
+            this.player.cards.push(deckStore.flipCard(deckStore.takeCard()))
+            this.player.cards.push(deckStore.flipCard(deckStore.takeCard()))
+
+            // Deal two cards to the dealer
             this.dealer.cards.push(deckStore.takeCard()) // Set first card hidden in store
+            this.dealer.cards.push(deckStore.flipCard(deckStore.takeCard())) // Set second card visible in store
+
+            // Deal cards to the dealer until he have more than 17
             while (this.getDealerRealSum < 17) {
                 this.dealer.cards.push(deckStore.flipCard(deckStore.takeCard())) // Add card to dealer's hand
             }
 
-            // Deal two cards to the player
-            Array.from({ length: 2 }, () => this.player.cards.push(deckStore.flipCard(deckStore.takeCard())))
-
             // Check if the player has blackjack
             if (this.getPlayerSum === 21) {
                 this.stay() // Runs the stay action and ends the game
+                return true
             }
         },
         hit() {
@@ -81,6 +86,7 @@ export const useGameStore = defineStore({
                     playerSum
                 }
             } else if (playerSum === 21) {
+                // TODO: The player gets a higher payout -> 3:2
                 return {
                     win: true,
                     message: 'You win! BLACKJACK! 🤩',
@@ -95,6 +101,7 @@ export const useGameStore = defineStore({
                     playerSum
                 }
             } else if (playerSum === dealerSum) {
+                // TODO: The player gets his bet back.
                 return {
                     win: false,
                     message: 'Tie! Both have the same sum! 🤔',
