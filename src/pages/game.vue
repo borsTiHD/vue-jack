@@ -26,7 +26,7 @@
                             <GameCard v-for="(card, index) in playerCards" :key="index" :card="card" :class="playerCards.length > index + 1 ? 'mr-2' : ''" />
                         </div>
                         <div class="flex flex-row mt-4">
-                            <AppButton class="font-montserrat mr-2" uppercase @click="hitMove">Hit</AppButton>
+                            <AppButton class="font-montserrat mr-2" uppercase :disabled="!playerCanHit" @click="hitMove">Hit</AppButton>
                             <AppButton class="font-montserrat ml-2" uppercase @click="stayMove">Stay</AppButton>
                         </div>
                     </div>
@@ -61,6 +61,7 @@ const dealerRealSum = computed(() => gameStore.getDealerRealSum)
 // Player cards + Player sum
 const playerCards = computed(() => gameStore.getPlayerCards)
 const playerSum = computed(() => gameStore.getPlayerSum)
+const playerCanHit = computed(() => gameStore.canHit)
 
 // Starting game on client side
 onMounted(() => {
@@ -69,13 +70,13 @@ onMounted(() => {
 
 // Hit new card
 const hitMove = () => {
-    console.log('Hit new card')
-    gameStore.hit()
+    if (gameStore.canHit) {
+        gameStore.hit()
+    }
 }
 
 // Stay
 const stayMove = () => {
-    console.log('Stay')
     gameStore.stay()
 }
 </script>
