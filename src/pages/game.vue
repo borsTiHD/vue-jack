@@ -2,6 +2,21 @@
     <div class="flex flex-col text-gray-900 dark:text-white">
         <section id="game" class="flex justify-center flex-col bg-white dark:bg-body-bg p-8">
             <div class="mx-auto">
+                <!-- Modal - for game result -->
+                <AppModal v-model="showModal">
+                    <template #header>{{ gameResults.win ? 'WIN!!!' : 'Loose!' }}</template>
+                    <template #content>
+                        <div class="flex flex-col">
+                            <p>{{ gameResults.message }}</p>
+                            <p>Dealer: {{ gameResults.dealerSum }}</p>
+                            <p>You: {{ gameResults.playerSum }}</p>
+                        </div>
+                    </template>
+                    <template #footer>
+                        <AppButton class="font-montserrat ml-2" uppercase @click="newGame">New Game</AppButton>
+                    </template>
+                </AppModal>
+                <!-- Dealer -->
                 <AppCard class="mt-2">
                     <div class="flex flex-col">
                         <div class="flex flex-row items-center mb-2">
@@ -15,6 +30,7 @@
                         </div>
                     </div>
                 </AppCard>
+                <!-- Player -->
                 <AppCard class="mt-2">
                     <div class="flex flex-col">
                         <div class="flex flex-row items-center mb-2">
@@ -40,6 +56,7 @@
 import { onMounted } from 'vue'
 import AppCard from '@/components/misc/AppCard.vue'
 import AppButton from '@/components/misc/AppButton.vue'
+import AppModal from '@/components/misc/AppModal.vue'
 import GameCard from '@/components/game/GameCard.vue'
 import GameScore from '@/components/game/GameScore.vue'
 import { useAppStore } from '~/store/app'
@@ -62,6 +79,15 @@ const dealerRealSum = computed(() => gameStore.getDealerRealSum)
 const playerCards = computed(() => gameStore.getPlayerCards)
 const playerSum = computed(() => gameStore.getPlayerSum)
 const playerCanHit = computed(() => gameStore.canHit)
+
+// Game result
+const showModal = computed(() => !gameStore.gameRunning)
+const gameResults = computed(() => gameStore.getGameResults)
+
+// Starting new game
+const newGame = () => {
+    gameStore.startGame()
+}
 
 // Starting game on client side
 onMounted(() => {
