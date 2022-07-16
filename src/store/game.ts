@@ -51,32 +51,22 @@ export const useGameStore = defineStore({
             // Allows the player (you) to draw while yourSum <= 21 - Returns true/false
             return this.calculateDeckSum(state.player.cards) <= 21
         },
-        aceCount: () => {
-            // Returns the number of aces in the given deck
-            return (deck) => {
-                if (!deck || !Array.isArray(deck) || deck.length === 0) return 0
-                const deckStore = useDeckStore()
-                let count = 0
-                deck.forEach((card) => {
-                    if (deckStore.checkAce(card)) {
-                        count++
-                    }
-                })
-                return count
-            }
-        },
-        reduceAce: () => {
+        reduceAces() {
             // Reduces aces if they are over 21
-            // TODO: Implement + make it dynamic with deck as an argument instead of using fix numbers
-            return (playerSum, playerAceCount) => {
-                while (playerSum > 21 && playerAceCount > 0) {
-                    playerSum -= 10
-                    playerAceCount -= 1
+            // Calucaltes best possible sum of deck
+            return (deck, sum) => {
+                const deckStore = useDeckStore()
+                const deckAces = deck.filter((card) => deckStore.checkAce(card)) // Get all aces
+                let deckSum = sum // Calucalted sum of deck
+                // As long as the sum is over 21 and there are aces, reduce the ace value and deck sum
+                while (deckSum > 21 && Array.isArray(deckAces) && deckAces.length > 0) {
+                    deckSum -= 10
+                    deckAces.pop()
                 }
-                return playerSum
+                return deckSum
             }
         },
-        calculateDeckSum: () => {
+        calculateDeckSum() {
             // Calculates the sum of the given deck
             // If 'filterHiddenCards' is true (default), only cards with 'hidden = false' (visible) are considered
             return (deck, filterHiddenCards = true) => {
@@ -85,10 +75,8 @@ export const useGameStore = defineStore({
                 const filteredDeck = filterHiddenCards ? deck.filter((card) => !card.hidden) : deck
                 const deckStore = useDeckStore()
                 let sum = 0
-                filteredDeck.forEach((card) => {
-                    sum += deckStore.getValue(card)
-                })
-                return sum
+                filteredDeck.forEach((card) => { sum += deckStore.getValue(card) })
+                return sum <= 21 ? sum : this.reduceAces(filteredDeck, sum)
             }
         }
     }
