@@ -64,7 +64,7 @@ import { useGameStore } from '~/store/game'
 
 // Changing title
 const appStore = useAppStore()
-const pageTitle = `Home - ${appStore.getTitle}`
+const pageTitle = `Game - ${appStore.getTitle}`
 useHead({ title: pageTitle })
 
 // Using stores
