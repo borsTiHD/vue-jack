@@ -38,12 +38,6 @@ export const useGameStore = defineStore({
             while (this.getDealerRealSum < 17) {
                 this.dealer.cards.push(deckStore.flipCard(deckStore.takeCard())) // Add card to dealer's hand
             }
-
-            // Check if the player has blackjack
-            if (this.getPlayerSum === 21) {
-                this.stay() // Runs the stay action and ends the game
-                return true
-            }
         },
         hit() {
             if (this.canHit) {
@@ -53,6 +47,7 @@ export const useGameStore = defineStore({
         },
         stay() {
             this.player.stay = true
+            this.gameEnded = true
 
             // Flip every hidden card from dealer
             const deckStore = useDeckStore()
@@ -61,9 +56,6 @@ export const useGameStore = defineStore({
                     deckStore.flipCard(card)
                 }
             })
-
-            // Win/loose conditions
-            this.gameEnded = true
         }
     },
     getters: {
@@ -77,18 +69,18 @@ export const useGameStore = defineStore({
             const dealerSum = this.getDealerSum
             const playerSum = this.getPlayerSum
 
-            // Win/loose conditions
+            // Win/lose conditions
             if (playerSum > 21) {
                 return {
                     win: false,
-                    message: 'You loose! You have more than 21! 🤪',
+                    message: 'You lose! You have more than 21! 🤪',
                     dealerSum,
                     playerSum
                 }
             } else if (playerSum === 21) {
                 // TODO: The player gets a higher payout -> 3:2
                 return {
-                    win: true,
+                    win: 'blackjack',
                     message: 'You win! BLACKJACK! 🤩',
                     dealerSum,
                     playerSum
@@ -103,8 +95,8 @@ export const useGameStore = defineStore({
             } else if (playerSum === dealerSum) {
                 // TODO: The player gets his bet back.
                 return {
-                    win: false,
-                    message: 'Tie! Both have the same sum! 🤔',
+                    win: 'tie',
+                    message: 'Draw! Both have the same sum! 🤔',
                     dealerSum,
                     playerSum
                 }
@@ -118,13 +110,13 @@ export const useGameStore = defineStore({
             } else if (playerSum < dealerSum) {
                 return {
                     win: false,
-                    message: 'You loose! You have less than the dealer! 🤡',
+                    message: 'You lose! You have less than the dealer! 🤡',
                     dealerSum,
                     playerSum
                 }
             } else {
                 return {
-                    win: false,
+                    win: 'error',
                     message: 'Something went wrong! ⚠️',
                     dealerSum,
                     playerSum
@@ -133,9 +125,9 @@ export const useGameStore = defineStore({
         },
         canHit(state) {
             // If player has not stayed and has less than 21
-            // Also allows the player (you) to draw while <= 21
+            // Also allows the player (you) to draw while < 21
             // Returns true/false
-            return !state.player.stay && this.calculateDeckSum(state.player.cards) <= 21
+            return !state.player.stay && this.calculateDeckSum(state.player.cards) < 21
         },
         reduceAces() {
             // Reduces aces if they are over 21

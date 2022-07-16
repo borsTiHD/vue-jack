@@ -4,7 +4,7 @@
             <div class="mx-auto">
                 <!-- Modal - for game result -->
                 <AppModal v-model="showModal">
-                    <template #header>{{ gameResults.win ? 'WIN!!!' : 'Loose!' }}</template>
+                    <template #header>{{ resultsTitel }}</template>
                     <template #content>
                         <div class="flex flex-col">
                             <p class="text-xl mb-2">{{ gameResults.message }}</p>
@@ -83,6 +83,20 @@ const playerCanHit = computed(() => gameStore.canHit)
 const showModal = ref(false) // Modal state
 const gameRunning = computed(() => gameStore.getGameRunning)
 const gameResults = computed(() => gameStore.getGameResults) // Result of game
+const resultsTitel = computed(() => {
+    const results = gameStore.getGameResults
+    if (results.win === true) {
+        return 'You win!'
+    } else if (results.win === false) {
+        return 'You lose!'
+    } else if (results.win === 'blackjack') {
+        return 'Blackjack!'
+    } else if (results.win === 'tie') {
+        return 'Draw!'
+    } else {
+        return 'Error!'
+    }
+})
 watch(gameRunning, (newValue) => {
     if (!newValue) {
         showModal.value = true // After game is over, show modal
