@@ -4,11 +4,13 @@ import { useDeckStore } from '~/store/deck'
 export const useGameStore = defineStore({
     id: 'game-store',
     state: () => ({
+        gameEnded: false,
         dealer: {
             cards: []
         },
         player: {
-            cards: []
+            cards: [],
+            stay: false
         }
     }),
     actions: {
@@ -38,18 +40,79 @@ export const useGameStore = defineStore({
             }
         },
         stay() {
-            console.log('Stay')
+            this.player.stay = true
+
+            // Flip every hidden card from dealer
+            const deckStore = useDeckStore()
+            this.dealer.cards.forEach((card) => {
+                if (card.hidden) {
+                    deckStore.flipCard(card)
+                }
+            })
+
+            // Win/loose conditions
+            this.gameEnded = true
         }
     },
     getters: {
         getDealerCards: (state) => state.dealer.cards,
         getPlayerCards: (state) => state.player.cards,
-        getDealerSum() { return this.calculateDeckSum(this.getDealerCards) },
-        getDealerRealSum() { return this.calculateDeckSum(this.getDealerCards, false) },
+        getDealerSum() { return this.calculateDeckSum(this.getDealerCards) }, // Dealer's sum without hidden cards
+        getDealerRealSum() { return this.calculateDeckSum(this.getDealerCards, false) }, // Dealer's real sum with all cards
         getPlayerSum() { return this.calculateDeckSum(this.getPlayerCards) },
+        checkWin() {
+            const dealerSum = this.getDealerSum
+            const playerSum = this.getPlayerSum
+
+            // Win/loose conditions
+            if (playerSum > 21) {
+                return {
+                    win: false,
+                    message: 'You Loose! You have more than 21!',
+                    dealerSum,
+                    playerSum
+                }
+            } else if (dealerSum > 21) {
+                return {
+                    win: true,
+                    message: 'You win! Dealer has more than 21!',
+                    dealerSum,
+                    playerSum
+                }
+            } else if (playerSum === dealerSum) {
+                return {
+                    win: false,
+                    message: 'Tie! Both have the same sum!',
+                    dealerSum,
+                    playerSum
+                }
+            } else if (playerSum > dealerSum) {
+                return {
+                    win: true,
+                    message: 'You win! You have more than the dealer!',
+                    dealerSum,
+                    playerSum
+                }
+            } else if (playerSum < dealerSum) {
+                return {
+                    win: false,
+                    message: 'You Loose! You have less than the dealer!',
+                    dealerSum,
+                    playerSum
+                }
+            }
+            return {
+                win: false,
+                message: 'Something went wrong!',
+                dealerSum,
+                playerSum
+            }
+        },
         canHit(state) {
-            // Allows the player (you) to draw while yourSum <= 21 - Returns true/false
-            return this.calculateDeckSum(state.player.cards) <= 21
+            // If player has not stayed and has less than 21
+            // Also allows the player (you) to draw while <= 21
+            // Returns true/false
+            return !state.player.stay && this.calculateDeckSum(state.player.cards) <= 21
         },
         reduceAces() {
             // Reduces aces if they are over 21
