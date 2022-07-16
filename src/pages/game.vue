@@ -41,8 +41,8 @@
                             <GameCard v-for="(card, index) in playerCards" :key="index + card.name" :card="card" :class="playerCards.length > index + 1 ? '-mr-16' : ''" />
                         </TransitionGroup>
                         <div class="flex flex-row mt-4">
-                            <AppButton class="font-montserrat mr-2" :disabled="!playerCanHit" @click="hitMove">Hit</AppButton>
-                            <AppButton class="font-montserrat ml-2" type="secondary" :disabled="!gameRunning" @click="stayMove">Stay</AppButton>
+                            <AppButton class="font-montserrat mr-2" :disabled="!playerCanHit" @click="gameStore.hit()">Hit</AppButton>
+                            <AppButton class="font-montserrat ml-2" type="secondary" :disabled="!gameRunning" @click="gameStore.stay()">Stay</AppButton>
                             <AppButton v-if="!gameRunning" class="font-montserrat ml-4" @click="nextGame">Next Game</AppButton>
                         </div>
                     </div>
@@ -113,18 +113,6 @@ const nextGame = () => {
 onMounted(() => {
     gameStore.startGame() // New Game
 })
-
-// Hit new card
-const hitMove = () => {
-    if (gameStore.canHit) {
-        gameStore.hit()
-    }
-}
-
-// Stay
-const stayMove = () => {
-    gameStore.stay()
-}
 </script>
 
 <style>
