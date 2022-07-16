@@ -17,7 +17,8 @@ module.exports = {
                 'bg-light': '#8D99AE',
                 bg: '#2B2D42',
                 'body-bg': '#202125',
-                magenta: '#e20074'
+                'blackjack-light': '#4ae55b',
+                'blackjack-dark': '#31983c'
             }
         }
     },
