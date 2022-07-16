@@ -23,10 +23,10 @@
                             <p>Dealer:</p>
                             <GameScore :score="dealerSum" />
                         </div>
-                        <div v-if="dealerCards" id="dealer-cards" class="flex flex-row mx-auto">
-                            <!-- Dealer cards -->
-                            <GameCard v-for="(card, index) in dealerCards" :key="index" :card="card" :class="dealerCards.length > index + 1 ? '-mr-16' : ''" />
-                        </div>
+                        <!-- Dealer cards -->
+                        <TransitionGroup v-if="dealerCards" name="cards" tag="div" class="flex flex-row mx-auto">
+                            <GameCard v-for="(card, index) in dealerCards" :key="index + card.name" :card="card" :class="dealerCards.length > index + 1 ? '-mr-16' : ''" />
+                        </TransitionGroup>
                     </div>
                 </AppCard>
                 <!-- Player -->
@@ -37,9 +37,9 @@
                             <GameScore :score="playerSum" />
                         </div>
                         <!-- Player cards -->
-                        <div v-if="playerCards" id="player-cards" class="flex flex-row mx-auto">
-                            <GameCard v-for="(card, index) in playerCards" :key="index" :card="card" :class="playerCards.length > index + 1 ? '-mr-16' : ''" />
-                        </div>
+                        <TransitionGroup v-if="playerCards" name="cards" tag="div" class="flex flex-row mx-auto">
+                            <GameCard v-for="(card, index) in playerCards" :key="index + card.name" :card="card" :class="playerCards.length > index + 1 ? '-mr-16' : ''" />
+                        </TransitionGroup>
                         <div class="flex flex-row mt-4">
                             <AppButton class="font-montserrat mr-2" :disabled="!playerCanHit" @click="hitMove">Hit</AppButton>
                             <AppButton class="font-montserrat ml-2" :disabled="!gameRunning" @click="stayMove">Stay</AppButton>
@@ -126,3 +126,22 @@ const stayMove = () => {
     gameStore.stay()
 }
 </script>
+
+<style>
+.cards-enter-active,
+.cards-leave-active {
+    transition: all 0.5s ease;
+}
+
+.cards-enter-from,
+.cards-leave-to {
+    opacity: 50;
+    transform: translateX(30px);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.cards-leave-active {
+    position: absolute;
+}
+</style>
