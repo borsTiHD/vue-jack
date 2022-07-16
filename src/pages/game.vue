@@ -4,7 +4,11 @@
             <div class="mx-auto">
                 <AppCard class="mt-2">
                     <div class="flex flex-col">
-                        <p class="mb-2">Dealer: {{ dealerSum }} ({{ dealerRealSum }})</p>
+                        <div class="flex flex-row items-center mb-2">
+                            <p>Dealer:</p>
+                            <GameScore :score="dealerSum" />
+                            <p>({{ dealerRealSum }})</p>
+                        </div>
                         <div v-if="dealerCards" id="dealer-cards" class="flex flex-row mx-auto">
                             <!-- Dealer cards -->
                             <GameCard v-for="(card, index) in dealerCards" :key="index" :card="card" :class="dealerCards.length > index + 1 ? 'mr-2' : ''" />
@@ -13,7 +17,10 @@
                 </AppCard>
                 <AppCard class="mt-2">
                     <div class="flex flex-col">
-                        <p class="mb-2">You: {{ playerSum }}</p>
+                        <div class="flex flex-row items-center mb-2">
+                            <p>You:</p>
+                            <GameScore :score="playerSum" />
+                        </div>
                         <!-- Player cards -->
                         <div v-if="playerCards" id="player-cards" class="flex flex-row mx-auto">
                             <GameCard v-for="(card, index) in playerCards" :key="index" :card="card" :class="playerCards.length > index + 1 ? 'mr-2' : ''" />
@@ -34,6 +41,7 @@ import { onMounted } from 'vue'
 import AppCard from '@/components/misc/AppCard.vue'
 import AppButton from '@/components/misc/AppButton.vue'
 import GameCard from '@/components/game/GameCard.vue'
+import GameScore from '@/components/game/GameScore.vue'
 import { useAppStore } from '~/store/app'
 import { useGameStore } from '~/store/game'
 
