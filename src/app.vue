@@ -1,5 +1,5 @@
 <template>
-    <Body :class="[{ dark: isDarkMode }, isDarkMode ? 'bg-body-bg' : 'bg-white']">
+    <Body :class="[{ dark: isDarkMode }, isDarkMode ? 'bg-gradient-to-r from-blackjack-dark via-blackjack-light to-blackjack-dark' : 'bg-blackjack-light']">
         <div class="bg-fixed bg-bottom">
             <main>
                 <NuxtPage />
