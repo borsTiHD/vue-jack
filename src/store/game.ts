@@ -34,6 +34,11 @@ export const useGameStore = defineStore({
 
             // Deal two cards to the player
             Array.from({ length: 2 }, () => this.player.cards.push(deckStore.flipCard(deckStore.takeCard())))
+
+            // Check if the player has blackjack
+            if (this.getPlayerSum === 21) {
+                this.stay() // Runs the stay action and ends the game
+            }
         },
         hit() {
             if (this.canHit) {
@@ -71,7 +76,14 @@ export const useGameStore = defineStore({
             if (playerSum > 21) {
                 return {
                     win: false,
-                    message: 'You Loose! You have more than 21! 🤪',
+                    message: 'You loose! You have more than 21! 🤪',
+                    dealerSum,
+                    playerSum
+                }
+            } else if (playerSum === 21) {
+                return {
+                    win: true,
+                    message: 'You win! BLACKJACK! 🤩',
                     dealerSum,
                     playerSum
                 }
@@ -99,7 +111,7 @@ export const useGameStore = defineStore({
             } else if (playerSum < dealerSum) {
                 return {
                     win: false,
-                    message: 'You Loose! You have less than the dealer! 🤡',
+                    message: 'You loose! You have less than the dealer! 🤡',
                     dealerSum,
                     playerSum
                 }
