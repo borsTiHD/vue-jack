@@ -4,7 +4,7 @@
             <div class="mx-auto">
                 <AppCard class="mt-2">
                     <div class="flex flex-col">
-                        <p class="mb-2">Dealer: {{ visibleDealerSum }}</p>
+                        <p class="mb-2">Dealer: {{ dealerSum }} ({{ dealerRealSum }})</p>
                         <div v-if="dealerCards" id="dealer-cards" class="flex flex-row mx-auto">
                             <!-- Dealer cards -->
                             <GameCard v-for="(card, index) in dealerCards" :key="index" :card="card" :class="dealerCards.length > index + 1 ? 'mr-2' : ''" />
@@ -47,7 +47,8 @@ const gameStore = useGameStore()
 
 // Dealer cards + Dealer sum (without hidden card)
 const dealerCards = computed(() => gameStore.getDealerCards)
-const visibleDealerSum = computed(() => gameStore.calculateDeckSum(gameStore.getDealerCards))
+const dealerSum = computed(() => gameStore.getDealerSum)
+const dealerRealSum = computed(() => gameStore.getDealerRealSum)
 
 // Player cards + Player sum
 const playerCards = computed(() => gameStore.getPlayerCards)

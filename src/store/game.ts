@@ -22,19 +22,11 @@ export const useGameStore = defineStore({
             deckStore.buildDeck() // Build deck
             Array.from({ length: 3 }, () => deckStore.shuffleDeck()) // Shuffle deck x times
 
-            // TODO: Delete me
-            console.log('Generated deck:', deckStore.getDeck)
-            console.log('Generated deck size:', deckStore.getDeck.length)
-
             // Deal cards to the dealer until he have more than 17
             this.dealer.cards.push(deckStore.takeCard()) // Set first card hidden in store
-            while (this.getDealerSum < 17) {
+            while (this.getDealerRealSum < 17) {
                 this.dealer.cards.push(deckStore.flipCard(deckStore.takeCard())) // Add card to dealer's hand
             }
-
-            // TODO: Delete me
-            console.log('Dealer cards:', this.getDealerCards)
-            console.log('Dealer sum:', this.getDealerSum)
 
             // Deal two cards to the player
             Array.from({ length: 2 }, () => this.player.cards.push(deckStore.flipCard(deckStore.takeCard())))
@@ -51,6 +43,7 @@ export const useGameStore = defineStore({
         getDealerCards: (state) => state.dealer.cards,
         getPlayerCards: (state) => state.player.cards,
         getDealerSum() { return this.calculateDeckSum(this.getDealerCards) },
+        getDealerRealSum() { return this.calculateDeckSum(this.getDealerCards, false) },
         getPlayerSum() { return this.calculateDeckSum(this.getPlayerCards) },
         canHit(state) {
             // Allows the player (you) to draw while yourSum <= 21 - Returns true/false
@@ -83,11 +76,14 @@ export const useGameStore = defineStore({
         },
         calculateDeckSum: () => {
             // Calculates the sum of the given deck
-            return (deck) => {
+            // If 'filterHiddenCards' is true (default), only cards with 'hidden = false' (visible) are considered
+            return (deck, filterHiddenCards = true) => {
                 if (!deck || !Array.isArray(deck) || deck.length === 0) return 0
+                // Filters hidden cards from the deck if desired
+                const filteredDeck = filterHiddenCards ? deck.filter((card) => !card.hidden) : deck
                 const deckStore = useDeckStore()
                 let sum = 0
-                deck.forEach((card) => {
+                filteredDeck.forEach((card) => {
                     sum += deckStore.getValue(card)
                 })
                 return sum
