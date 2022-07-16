@@ -42,7 +42,7 @@
                         </TransitionGroup>
                         <div class="flex flex-row mt-4">
                             <AppButton class="font-montserrat mr-2" :disabled="!playerCanHit" @click="hitMove">Hit</AppButton>
-                            <AppButton class="font-montserrat ml-2" :disabled="!gameRunning" @click="stayMove">Stay</AppButton>
+                            <AppButton class="font-montserrat ml-2" type="secondary" :disabled="!gameRunning" @click="stayMove">Stay</AppButton>
                             <AppButton v-if="!gameRunning" class="font-montserrat ml-4" @click="nextGame">Next Game</AppButton>
                         </div>
                     </div>
