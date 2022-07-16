@@ -7,7 +7,7 @@
                     <template #header>{{ gameResults.win ? 'WIN!!!' : 'Loose!' }}</template>
                     <template #content>
                         <div class="flex flex-col">
-                            <p>{{ gameResults.message }}</p>
+                            <p class="text-xl mb-2">{{ gameResults.message }}</p>
                             <p>Dealer: {{ gameResults.dealerSum }}</p>
                             <p>You: {{ gameResults.playerSum }}</p>
                         </div>
@@ -43,7 +43,8 @@
                         </div>
                         <div class="flex flex-row mt-4">
                             <AppButton class="font-montserrat mr-2" uppercase :disabled="!playerCanHit" @click="hitMove">Hit</AppButton>
-                            <AppButton class="font-montserrat ml-2" uppercase @click="stayMove">Stay</AppButton>
+                            <AppButton class="font-montserrat ml-2" uppercase :disabled="!gameRunning" @click="stayMove">Stay</AppButton>
+                            <AppButton v-if="!gameRunning" class="font-montserrat ml-4" uppercase @click="newGame">New Game</AppButton>
                         </div>
                     </div>
                 </AppCard>
@@ -53,7 +54,7 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import AppCard from '@/components/misc/AppCard.vue'
 import AppButton from '@/components/misc/AppButton.vue'
 import AppModal from '@/components/misc/AppModal.vue'
@@ -80,12 +81,19 @@ const playerCards = computed(() => gameStore.getPlayerCards)
 const playerSum = computed(() => gameStore.getPlayerSum)
 const playerCanHit = computed(() => gameStore.canHit)
 
-// Game result
-const showModal = computed(() => !gameStore.gameRunning)
-const gameResults = computed(() => gameStore.getGameResults)
+// Game result + watcher for game result
+const showModal = ref(false) // Modal state
+const gameRunning = computed(() => gameStore.getGameRunning)
+const gameResults = computed(() => gameStore.getGameResults) // Result of game
+watch(gameRunning, (newValue) => {
+    if (!newValue) {
+        showModal.value = true // After game is over, show modal
+    }
+})
 
 // Starting new game
 const newGame = () => {
+    showModal.value = false
     gameStore.startGame()
 }
 

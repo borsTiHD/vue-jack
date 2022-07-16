@@ -62,7 +62,7 @@ export const useGameStore = defineStore({
         getDealerSum() { return this.calculateDeckSum(this.getDealerCards) }, // Dealer's sum without hidden cards
         getDealerRealSum() { return this.calculateDeckSum(this.getDealerCards, false) }, // Dealer's real sum with all cards
         getPlayerSum() { return this.calculateDeckSum(this.getPlayerCards) },
-        gameRunning: (state) => !state.gameEnded,
+        getGameRunning: (state) => !state.gameEnded,
         getGameResults() {
             const dealerSum = this.getDealerSum
             const playerSum = this.getPlayerSum
