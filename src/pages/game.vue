@@ -126,6 +126,3 @@ const stayMove = () => {
     gameStore.stay()
 }
 </script>
-
-<style scoped>
-</style>
