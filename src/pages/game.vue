@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col text-gray-900 dark:text-white">
-        <section id="game" class="flex justify-center flex-col bg-white dark:bg-body-bg p-8">
+        <section id="game" class="flex justify-center flex-col p-8">
             <div class="mx-auto">
                 <!-- Modal - for game result -->
                 <AppModal v-model="showModal">
@@ -22,7 +22,6 @@
                         <div class="flex flex-row items-center mb-2">
                             <p>Dealer:</p>
                             <GameScore :score="dealerSum" />
-                            <p>({{ dealerRealSum }})</p>
                         </div>
                         <div v-if="dealerCards" id="dealer-cards" class="flex flex-row mx-auto">
                             <!-- Dealer cards -->
@@ -74,7 +73,6 @@ const gameStore = useGameStore()
 // Dealer cards + Dealer sum (without hidden card)
 const dealerCards = computed(() => gameStore.getDealerCards)
 const dealerSum = computed(() => gameStore.getDealerSum)
-const dealerRealSum = computed(() => gameStore.getDealerRealSum)
 
 // Player cards + Player sum
 const playerCards = computed(() => gameStore.getPlayerCards)

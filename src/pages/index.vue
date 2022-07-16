@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col text-gray-900 dark:text-white">
-        <section class="flex justify-center bg-white dark:bg-body-bg p-8">
+        <section class="flex justify-center p-8">
             <AppCard class="mt-2">
                 <div class="flex flex-col">
                     <p class="mb-2">Want to play {{ appStore.getTitle }}?</p>
