@@ -10,8 +10,8 @@
         "url": "https://github.com/borsTiHD/vue-jack"
     },
     "scripts": {
-        "build": "nuxt build",
         "dev": "nuxt dev",
+        "build": "nuxt build",
         "generate": "nuxt generate",
         "preview": "nuxt preview",
         "lint:script": "eslint --ext .ts,vue --ignore-path .gitignore ."

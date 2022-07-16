@@ -1,6 +1,8 @@
-# Nuxt 3 Minimal Starter
+# Vue-Jack 🃏
 
-Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.
+It's a simple Blackjack clone written in Vue3/Nuxt3.  
+Inspiration for the game logic (also the card images) comes from [ImKennyYip](https://github.com/ImKennyYip/black-jack).  
+However, the game logic has been adapted and is still being expanded to include a betting option.
 
 ## Setup
 
@@ -12,9 +14,6 @@ yarn install
 
 # npm
 npm install
-
-# pnpm
-pnpm install --shamefully-hoist
 ```
 
 ## Development Server
