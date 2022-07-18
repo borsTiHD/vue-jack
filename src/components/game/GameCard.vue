@@ -3,7 +3,7 @@
         <img
             :src="`/img/cards/${getCardName}.png`"
             :alt="getCardName"
-            class="card-image w-full h-48 object-cover rounded-lg drop-shadow-lg transition ease-in-out duration-300 hover:scale-105"
+            class="card-image w-24 h-full object-cover rounded-lg drop-shadow-lg transition ease-in-out duration-300 hover:scale-105"
             loading="lazy"
         >
     </div>

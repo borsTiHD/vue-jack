@@ -2,14 +2,14 @@
     <AppCard class="mt-2">
         <div class="flex flex-col">
             <div class="flex flex-col items-center mb-2">
-                <p class="text-5xl mb-4">{{ appStore.getTitle }}</p>
+                <p class="text-4xl md:text-5xl mb-4">{{ appStore.getTitle }}</p>
                 <p>Start the game after you set your bet.</p>
             </div>
-            <div class="grid grid-cols-4 gap-4 my-2">
-                <PhPokerChipFill class="col-span-1" :class="currentCredits < 10 ? 'fill-gray-600' : 'fill-red-500'" :value="10" @click="setCredits(10)" />
-                <PhPokerChipFill class="col-span-1" :class="currentCredits < 25 ? 'fill-gray-600' : 'fill-green-600'" :value="25" @click="setCredits(25)" />
-                <PhPokerChipFill class="col-span-1" :class="currentCredits < 50 ? 'fill-gray-600' : 'fill-blue-500'" :value="50" @click="setCredits(50)" />
-                <PhPokerChipFill class="col-span-1" :class="currentCredits < 100 ? 'fill-gray-600' : 'fill-black'" :value="100" @click="setCredits(100)" />
+            <div class="grid grid-cols-4 md:gap-4 my-2">
+                <PhPokerChipFill class="md:col-span-1" :class="currentCredits < 10 ? 'fill-gray-600' : 'fill-red-500'" :value="10" @click="setCredits(10)" />
+                <PhPokerChipFill class="md:col-span-1" :class="currentCredits < 25 ? 'fill-gray-600' : 'fill-green-600'" :value="25" @click="setCredits(25)" />
+                <PhPokerChipFill class="md:col-span-1" :class="currentCredits < 50 ? 'fill-gray-600' : 'fill-blue-500'" :value="50" @click="setCredits(50)" />
+                <PhPokerChipFill class="md:col-span-1" :class="currentCredits < 100 ? 'fill-gray-600' : 'fill-black'" :value="100" @click="setCredits(100)" />
             </div>
             <DisplayCredits class="my-2" />
             <div class="grid grid-cols-1 gap-4 mt-2">
