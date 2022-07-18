@@ -5,6 +5,7 @@
         tabindex="-1"
         aria-hidden="true"
         class="modal fixed inset-0 w-full h-screen bg-black/60 dark:bg-black/70 flex z-50"
+        @click.self="closeModal"
     >
         <!-- Text Modal -->
         <div class="modal-container p-4 w-full max-w-2xl m-auto">
