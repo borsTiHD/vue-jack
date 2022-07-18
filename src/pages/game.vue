@@ -3,19 +3,8 @@
         <section id="game" class="flex justify-center flex-col p-8">
             <div class="mx-auto">
                 <!-- Modal - for game result -->
-                <AppModal v-model="showModal">
-                    <template #header>{{ resultsTitel }}</template>
-                    <template #content>
-                        <div class="flex flex-col">
-                            <p class="text-xl mb-2">{{ gameResults.message }}</p>
-                            <p>Dealer: {{ gameResults.dealerSum }}</p>
-                            <p>You: {{ gameResults.playerSum }}</p>
-                        </div>
-                    </template>
-                    <template #footer>
-                        <AppButton class="font-montserrat ml-2" @click="nextGame">Next Game</AppButton>
-                    </template>
-                </AppModal>
+                <GameResult @next-game="nextGame" />
+
                 <!-- Dealer -->
                 <AppCard class="mt-2">
                     <div class="flex flex-col">
@@ -42,8 +31,8 @@
                         </TransitionGroup>
                         <div class="flex flex-row mt-4">
                             <AppButton class="font-montserrat mr-2" :disabled="!playerCanHit" @click="gameStore.hit()">Hit</AppButton>
-                            <AppButton class="font-montserrat ml-2" type="secondary" :disabled="!gameRunning" @click="gameStore.stay()">Stay</AppButton>
-                            <AppButton v-if="!gameRunning" class="font-montserrat ml-4" @click="nextGame">Next Game</AppButton>
+                            <AppButton class="font-montserrat ml-2" type="secondary" :disabled="!getGameRunning" @click="gameStore.stay()">Stay</AppButton>
+                            <AppButton v-if="!getGameRunning" class="font-montserrat ml-4" @click="nextGame">Next Game</AppButton>
                         </div>
                     </div>
                 </AppCard>
@@ -53,12 +42,12 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import AppCard from '@/components/misc/AppCard.vue'
 import AppButton from '@/components/misc/AppButton.vue'
-import AppModal from '@/components/misc/AppModal.vue'
 import GameCard from '@/components/game/GameCard.vue'
 import GameScore from '@/components/game/GameScore.vue'
+import GameResult from '@/components/game/GameResult.vue'
 import { useAppStore } from '~/store/app'
 import { useGameStore } from '~/store/game'
 
@@ -67,8 +56,11 @@ const appStore = useAppStore()
 const pageTitle = `Game - ${appStore.getTitle}`
 useHead({ title: pageTitle })
 
-// Using stores
+// Using game store
 const gameStore = useGameStore()
+
+// Game running state
+const { getGameRunning } = storeToRefs(gameStore)
 
 // Dealer cards + Dealer sum (without hidden card)
 const dealerCards = computed(() => gameStore.getDealerCards)
@@ -79,40 +71,11 @@ const playerCards = computed(() => gameStore.getPlayerCards)
 const playerSum = computed(() => gameStore.getPlayerSum)
 const playerCanHit = computed(() => gameStore.canHit)
 
-// Game result + watcher for game result
-const showModal = ref(false) // Modal state
-const gameRunning = computed(() => gameStore.getGameRunning)
-const gameResults = computed(() => gameStore.getGameResults) // Result of game
-const resultsTitel = computed(() => {
-    const results = gameStore.getGameResults
-    if (results.win === true) {
-        return 'You win!'
-    } else if (results.win === false) {
-        return 'You lose!'
-    } else if (results.win === 'blackjack') {
-        return 'Blackjack!'
-    } else if (results.win === 'tie') {
-        return 'Draw!'
-    } else {
-        return 'Error!'
-    }
-})
-watch(gameRunning, (newValue) => {
-    if (!newValue) {
-        showModal.value = true // After game is over, show modal
-    }
-})
-
 // Starting new game
-const nextGame = () => {
-    showModal.value = false
-    gameStore.startGame()
-}
+const nextGame = () => { gameStore.startGame() }
 
 // Starting game on client side
-onMounted(() => {
-    gameStore.startGame() // New Game
-})
+onMounted(() => { gameStore.startGame() })
 </script>
 
 <style>
