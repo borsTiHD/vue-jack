@@ -12,8 +12,8 @@
 // https://icones.js.org/collection/all?s=poker
 const props = defineProps({
     value: {
-        type: String,
-        default: ''
+        type: Number,
+        default: 0
     }
 })
 </script>
