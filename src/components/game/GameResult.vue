@@ -3,7 +3,8 @@
         <template #header>{{ gameResults.title }}</template>
         <template #content>
             <div class="flex flex-col">
-                <p class="text-xl mb-2">{{ gameResults.message }}</p>
+                <p class="text-xl">{{ gameResults.message }}</p>
+                <p class="mb-2">{{ profitMessage }}</p>
                 <p>Dealer: {{ gameResults.dealerSum }}</p>
                 <p>You: {{ gameResults.playerSum }}</p>
             </div>
@@ -19,19 +20,42 @@ import { ref, watch } from 'vue'
 import AppModal from '@/components/misc/AppModal.vue'
 import AppButton from '@/components/misc/AppButton.vue'
 import { useGameStore } from '~/store/game'
+import { useCreditStore } from '~/store/credits'
 
-// Using game store
+// Using stores
 const gameStore = useGameStore()
+const creditStore = useCreditStore()
 
 // Game result data
 const showModal = ref(false) // Modal state
+const profitMessage = ref('') // Modal state
 const showResult = computed(() => gameStore.getShowResults) // Show results
+const playersBet = computed(() => gameStore.getPlayersBet) // Players bet
 const gameResults = computed(() => gameStore.getGameResults) // Result of game
 
-// Watcher for game result
+// Watcher for game result and pays out the profit
 watch(showResult, (newValue) => {
     if (newValue) {
-        showModal.value = true // After game is over, show modal
+        // After game is over, show modal
+        showModal.value = true
+
+        // Pay out profit
+        if (gameResults.value.win === 'blackjack') {
+            const profit = playersBet.value * 2.5
+            creditStore.addCredits(profit)
+            profitMessage.value = `You won ${profit} credits!`
+        } else if (gameResults.value.win === 'tie') {
+            const profit = playersBet.value
+            creditStore.addCredits(profit)
+            profitMessage.value = `You get your credits back: ${profit}!`
+        } else if (gameResults.value.win === true) {
+            const profit = playersBet.value * 2
+            creditStore.addCredits(profit)
+            profitMessage.value = `You won ${profit} credits!`
+        } else if (gameResults.value.win === false) {
+            const lostCredits = playersBet.value
+            profitMessage.value = `You lose your bet: ${lostCredits} credits!`
+        }
     }
 })
 
