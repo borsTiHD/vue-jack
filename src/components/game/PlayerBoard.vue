@@ -1,5 +1,5 @@
 <template>
-    <AppCard>
+    <AppCard class="pt-2">
         <div class="flex flex-col">
             <div class="flex flex-row items-center mb-2">
                 <p>You:</p>

@@ -12,18 +12,18 @@
             <!-- Game running -->
             <div v-else class="mx-auto">
                 <!-- Result title -->
-                <div v-if="showResult" class="grid justify-items-center text-4xl mb-4"><p>{{ gameResults.title }}</p></div>
+                <div v-if="showResult" class="grid justify-items-center text-4xl mb-2 md:mb-4"><p>{{ gameResults.title }}</p></div>
 
                 <!-- Credits -->
-                <AppCard class="mb-4">
+                <AppCard class="mb-2 md:mb-4 py-2 md:py-4">
                     <DisplayCredits />
                 </AppCard>
 
                 <!-- Dealer -->
-                <DealerBoard class="my-4" />
+                <DealerBoard class="my-2 md:my-4" />
 
                 <!-- Player -->
-                <PlayerBoard class="mt-4" />
+                <PlayerBoard class="mt-2 md:mt-4" />
             </div>
         </section>
     </div>
