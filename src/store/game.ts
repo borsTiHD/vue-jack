@@ -103,8 +103,7 @@ export const useGameStore = defineStore({
                     dealerSum,
                     playerSum
                 }
-            } else if (playerSum === 21) {
-                // TODO: The player gets a higher payout -> 3:2
+            } else if (playerSum === 21 && this.getPlayerCards.length < 3) {
                 return {
                     win: 'blackjack',
                     title: 'You win!',
@@ -121,7 +120,6 @@ export const useGameStore = defineStore({
                     playerSum
                 }
             } else if (playerSum === dealerSum) {
-                // TODO: The player gets his bet back.
                 return {
                     win: 'tie',
                     title: 'Draw!',
