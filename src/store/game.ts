@@ -4,7 +4,7 @@ import { useDeckStore } from '~/store/deck'
 export const useGameStore = defineStore({
     id: 'game-store',
     state: () => ({
-        gameEnded: false,
+        running: false,
         dealer: {
             cards: []
         },
@@ -19,7 +19,7 @@ export const useGameStore = defineStore({
             this.dealer.cards = []
             this.player.cards = []
             this.player.stay = false
-            this.gameEnded = false
+            this.running = true
 
             // Creating a Deck
             const deckStore = useDeckStore()
@@ -49,7 +49,7 @@ export const useGameStore = defineStore({
 
             // Game ends
             this.player.stay = true
-            this.gameEnded = true
+            this.running = false
 
             // Flip every hidden card from dealer
             this.dealer.cards.forEach((card) => {
@@ -65,7 +65,7 @@ export const useGameStore = defineStore({
         getDealerSum() { return this.calculateDeckSum(this.getDealerCards) }, // Dealer's sum without hidden cards
         getDealerRealSum() { return this.calculateDeckSum(this.getDealerCards, false) }, // Dealer's real sum with all cards
         getPlayerSum() { return this.calculateDeckSum(this.getPlayerCards) },
-        getGameRunning: (state) => !state.gameEnded,
+        getGameRunning: (state) => state.running,
         getGameResults() {
             const dealerSum = this.getDealerSum
             const playerSum = this.getPlayerSum
