@@ -15,19 +15,22 @@
                 <div v-if="showResult" class="grid justify-items-center text-4xl mb-4"><p>{{ gameResults.title }}</p></div>
 
                 <!-- Credits -->
-                <DisplayCredits />
+                <AppCard class="mb-4">
+                    <DisplayCredits />
+                </AppCard>
 
                 <!-- Dealer -->
-                <DealerBoard />
+                <DealerBoard class="my-4" />
 
                 <!-- Player -->
-                <PlayerBoard />
+                <PlayerBoard class="mt-4" />
             </div>
         </section>
     </div>
 </template>
 
 <script setup>
+import AppCard from '@/components/misc/AppCard.vue'
 import GameBet from '@/components/game/GameBet.vue'
 import GameResult from '@/components/game/GameResult.vue'
 import DealerBoard from '@/components/game/DealerBoard.vue'
