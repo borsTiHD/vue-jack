@@ -29,10 +29,10 @@
                         <TransitionGroup v-if="playerCards" name="cards" tag="div" class="flex flex-row mx-auto">
                             <GameCard v-for="(card, index) in playerCards" :key="index + card.name" :card="card" :class="playerCards.length > index + 1 ? '-mr-16' : ''" />
                         </TransitionGroup>
-                        <div class="flex flex-row mt-4">
-                            <AppButton class="font-montserrat mr-2" :disabled="!playerCanHit" @click="gameStore.hit()">Hit</AppButton>
-                            <AppButton class="font-montserrat ml-2" type="secondary" :disabled="!getGameRunning" @click="gameStore.stay()">Stay</AppButton>
-                            <AppButton v-if="!getGameRunning" class="font-montserrat ml-4" @click="nextGame">Next Game</AppButton>
+                        <div class="grid grid-cols-2 gap-4 mt-4">
+                            <AppButton class="font-montserrat col-span-1" :disabled="!playerCanHit" @click="gameStore.hit()">Hit</AppButton>
+                            <AppButton class="font-montserrat col-span-1" type="secondary" :disabled="!getGameRunning" @click="gameStore.stay()">Stay</AppButton>
+                            <AppButton v-if="!getGameRunning" class="font-montserrat col-span-2" @click="nextGame">Next Game</AppButton>
                         </div>
                     </div>
                 </AppCard>
