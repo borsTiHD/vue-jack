@@ -13,7 +13,8 @@
             </div>
             <DisplayCredits class="my-2" />
             <div class="grid grid-cols-1 gap-4 mt-2">
-                <AppButton class="font-montserrat col-span-1" :disabled="currentlyCreditsSet < 1" @click="startGame">Play</AppButton>
+                <AppButton v-if="currentCredits >= 10" class="font-montserrat col-span-1" :disabled="currentlyCreditsSet < 1 || currentCredits < currentlyCreditsSet" @click="startGame">Play</AppButton>
+                <AppButton v-else class="font-montserrat col-span-1" type="secondary" @click="resetCredits">Reset Credits</AppButton>
             </div>
         </div>
     </AppCard>
@@ -47,10 +48,16 @@ const setCredits = (creditsToBeSet) => {
 // Set credits and start game
 const startGame = () => {
     const newBet = currentlyCreditsSet.value
-    if (newBet > 0) {
+    // Bet needs to be set more than 0 credits and player need to have at least the smallest bet
+    if (newBet > 0 && currentCredits.value >= 10 && currentCredits.value >= newBet) {
         creditStore.subtractCredits(newBet)
         gameStore.setBet(newBet)
         gameStore.startGame()
     }
+}
+
+// Reset credits
+const resetCredits = () => {
+    creditStore.resetCredits()
 }
 </script>
