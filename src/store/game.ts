@@ -10,6 +10,7 @@ export const useGameStore = defineStore({
             cards: []
         },
         player: {
+            bet: 0,
             cards: [],
             stay: false
         }
@@ -39,6 +40,10 @@ export const useGameStore = defineStore({
             // Deal two cards to the dealer
             this.dealer.cards.push(deckStore.takeCard()) // Set first card hidden in store
             this.dealer.cards.push(deckStore.flipCard(deckStore.takeCard())) // Set second card visible in store
+        },
+        setBet(amount) {
+            // Setting players bet
+            this.player.bet = amount
         },
         hit() {
             if (this.canHit) {
@@ -79,6 +84,7 @@ export const useGameStore = defineStore({
         getPlayerSum() { return this.calculateDeckSum(this.getPlayerCards) },
         getGameRunning: (state) => state.running,
         getShowResults: (state) => state.results,
+        getPlayersBet: (state) => state.player.bet,
         getGameResults() {
             const dealerSum = this.getDealerSum
             const playerSum = this.getPlayerSum
