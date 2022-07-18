@@ -1,6 +1,6 @@
 <template>
     <AppModal v-model="showModal">
-        <template #header>{{ resultsTitel }}</template>
+        <template #header>{{ gameResults.title }}</template>
         <template #content>
             <div class="flex flex-col">
                 <p class="text-xl mb-2">{{ gameResults.message }}</p>
@@ -16,7 +16,6 @@
 
 <script setup>
 import { ref, watch } from 'vue'
-import { storeToRefs } from 'pinia'
 import AppModal from '@/components/misc/AppModal.vue'
 import AppButton from '@/components/misc/AppButton.vue'
 import { useGameStore } from '~/store/game'
@@ -26,26 +25,12 @@ const gameStore = useGameStore()
 
 // Game result data
 const showModal = ref(false) // Modal state
-const { getGameRunning } = storeToRefs(gameStore)
+const showResult = computed(() => gameStore.getShowResults) // Show results
 const gameResults = computed(() => gameStore.getGameResults) // Result of game
-const resultsTitel = computed(() => {
-    const results = gameStore.getGameResults
-    if (results.win === true) {
-        return 'You win!'
-    } else if (results.win === false) {
-        return 'You lose!'
-    } else if (results.win === 'blackjack') {
-        return 'Blackjack!'
-    } else if (results.win === 'tie') {
-        return 'Draw!'
-    } else {
-        return 'Error!'
-    }
-})
 
 // Watcher for game result
-watch(getGameRunning, (newValue) => {
-    if (!newValue) {
+watch(showResult, (newValue) => {
+    if (newValue) {
         showModal.value = true // After game is over, show modal
     }
 })

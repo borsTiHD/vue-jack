@@ -5,6 +5,7 @@ export const useGameStore = defineStore({
     id: 'game-store',
     state: () => ({
         running: false,
+        results: false,
         dealer: {
             cards: []
         },
@@ -14,11 +15,16 @@ export const useGameStore = defineStore({
         }
     }),
     actions: {
-        startGame() {
+        newGame() {
             // Resetting the game
             this.dealer.cards = []
             this.player.cards = []
             this.player.stay = false
+            this.running = false
+            this.results = false
+        },
+        startGame() {
+            // Starting the game
             this.running = true
 
             // Creating a Deck
@@ -41,15 +47,17 @@ export const useGameStore = defineStore({
             }
         },
         stay() {
-            // Deal cards to the dealer until he have more than 17
+            // Game ends
+            this.player.stay = true
+            this.showResults()
+        },
+        showResults() {
+            // Dealer's turn
+            // Dealing cards until he have more than 17
             const deckStore = useDeckStore()
             while (this.getDealerRealSum < 17) {
                 this.dealer.cards.push(deckStore.flipCard(deckStore.takeCard())) // Add card to dealer's hand
             }
-
-            // Game ends
-            this.player.stay = true
-            this.running = false
 
             // Flip every hidden card from dealer
             this.dealer.cards.forEach((card) => {
@@ -57,6 +65,10 @@ export const useGameStore = defineStore({
                     deckStore.flipCard(card)
                 }
             })
+
+            // Showing results and therefore ending the game
+            // Game running state stays true until the user clicks on the new game button
+            this.results = true
         }
     },
     getters: {
@@ -66,6 +78,7 @@ export const useGameStore = defineStore({
         getDealerRealSum() { return this.calculateDeckSum(this.getDealerCards, false) }, // Dealer's real sum with all cards
         getPlayerSum() { return this.calculateDeckSum(this.getPlayerCards) },
         getGameRunning: (state) => state.running,
+        getShowResults: (state) => state.results,
         getGameResults() {
             const dealerSum = this.getDealerSum
             const playerSum = this.getPlayerSum
@@ -74,7 +87,8 @@ export const useGameStore = defineStore({
             if (playerSum > 21) {
                 return {
                     win: false,
-                    message: 'You lose! You have more than 21! 🤪',
+                    title: 'You lose!',
+                    message: 'You have more than 21! 🤪',
                     dealerSum,
                     playerSum
                 }
@@ -82,14 +96,16 @@ export const useGameStore = defineStore({
                 // TODO: The player gets a higher payout -> 3:2
                 return {
                     win: 'blackjack',
-                    message: 'You win! BLACKJACK! 🤩',
+                    title: 'You win!',
+                    message: 'BLACKJACK! 🤩',
                     dealerSum,
                     playerSum
                 }
             } else if (dealerSum > 21) {
                 return {
                     win: true,
-                    message: 'You win! Dealer has more than 21! 🥳🎉',
+                    title: 'You win!',
+                    message: 'Dealer has more than 21! 🥳🎉',
                     dealerSum,
                     playerSum
                 }
@@ -97,27 +113,31 @@ export const useGameStore = defineStore({
                 // TODO: The player gets his bet back.
                 return {
                     win: 'tie',
-                    message: 'Draw! Both have the same sum! 🤔',
+                    title: 'Draw!',
+                    message: 'Both have the same sum! 🤔',
                     dealerSum,
                     playerSum
                 }
             } else if (playerSum > dealerSum) {
                 return {
                     win: true,
-                    message: 'You win! You have more than the dealer! 🥳🎉',
+                    title: 'You win!',
+                    message: 'You have more than the dealer! 🥳🎉',
                     dealerSum,
                     playerSum
                 }
             } else if (playerSum < dealerSum) {
                 return {
                     win: false,
-                    message: 'You lose! You have less than the dealer! 🤡',
+                    title: 'You lose!',
+                    message: 'You have less than the dealer! 🤡',
                     dealerSum,
                     playerSum
                 }
             } else {
                 return {
                     win: 'error',
+                    title: 'Error!',
                     message: 'Something went wrong! ⚠️',
                     dealerSum,
                     playerSum

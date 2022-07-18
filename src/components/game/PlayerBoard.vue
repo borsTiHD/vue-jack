@@ -11,15 +11,14 @@
             </TransitionGroup>
             <div class="grid grid-cols-2 gap-4 mt-4">
                 <AppButton class="font-montserrat col-span-1" :disabled="!playerCanHit" @click="gameStore.hit()">Hit</AppButton>
-                <AppButton class="font-montserrat col-span-1" type="secondary" :disabled="!getGameRunning" @click="gameStore.stay()">Stay</AppButton>
-                <AppButton v-if="!getGameRunning" class="font-montserrat col-span-2" @click="nextGame">Next Game</AppButton>
+                <AppButton class="font-montserrat col-span-1" type="secondary" :disabled="showingResults" @click="gameStore.stay()">Stay</AppButton>
+                <AppButton v-if="showingResults" class="font-montserrat col-span-2" @click="nextGame">Next Game</AppButton>
             </div>
         </div>
     </AppCard>
 </template>
 
 <script setup>
-import { storeToRefs } from 'pinia'
 import AppCard from '@/components/misc/AppCard.vue'
 import AppButton from '@/components/misc/AppButton.vue'
 import GameCard from '@/components/game/GameCard.vue'
@@ -30,7 +29,7 @@ import { useGameStore } from '~/store/game'
 const gameStore = useGameStore()
 
 // Game running state
-const { getGameRunning } = storeToRefs(gameStore)
+const showingResults = computed(() => gameStore.getShowResults)
 
 // Player cards + Player sum
 const playerCards = computed(() => gameStore.getPlayerCards)
@@ -38,7 +37,7 @@ const playerSum = computed(() => gameStore.getPlayerSum)
 const playerCanHit = computed(() => gameStore.canHit)
 
 // Starting new game
-const nextGame = () => { gameStore.startGame() }
+const nextGame = () => { gameStore.newGame() }
 </script>
 
 <style>
