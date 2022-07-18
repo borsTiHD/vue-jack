@@ -3,7 +3,7 @@
         <div class="flex flex-col">
             <div class="flex flex-row items-center mb-2">
                 <p>You:</p>
-                <GameScore :score="playerSum" />
+                <DisplayScore :score="playerSum" />
             </div>
             <!-- Player cards -->
             <TransitionGroup v-if="playerCards" name="cards" tag="div" class="flex flex-row mx-auto">
@@ -22,7 +22,7 @@
 import AppCard from '@/components/misc/AppCard.vue'
 import AppButton from '@/components/misc/AppButton.vue'
 import GameCard from '@/components/game/GameCard.vue'
-import GameScore from '@/components/game/GameScore.vue'
+import DisplayScore from '@/components/game/DisplayScore.vue'
 import { useGameStore } from '~/store/game'
 
 // Using game store
