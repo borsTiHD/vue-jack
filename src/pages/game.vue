@@ -14,6 +14,9 @@
                 <!-- Result title -->
                 <div v-if="showResult" class="grid justify-items-center text-4xl mb-4"><p>{{ gameResults.title }}</p></div>
 
+                <!-- Credits -->
+                <DisplayCredits />
+
                 <!-- Dealer -->
                 <DealerBoard />
 
@@ -29,6 +32,7 @@ import GameBet from '@/components/game/GameBet.vue'
 import GameResult from '@/components/game/GameResult.vue'
 import DealerBoard from '@/components/game/DealerBoard.vue'
 import PlayerBoard from '@/components/game/PlayerBoard.vue'
+import DisplayCredits from '@/components/game/DisplayCredits.vue'
 import { useAppStore } from '~/store/app'
 import { useGameStore } from '~/store/game'
 

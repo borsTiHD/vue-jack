@@ -11,10 +11,7 @@
                 <PhPokerChipFill class="col-span-1" :class="currentCredits < 50 ? 'fill-gray-600' : 'fill-blue-500'" :value="50" @click="setCredits(50)" />
                 <PhPokerChipFill class="col-span-1" :class="currentCredits < 100 ? 'fill-gray-600' : 'fill-black'" :value="100" @click="setCredits(100)" />
             </div>
-            <div class="flex flex-col items-center my-2">
-                <p>Currently set: {{ currentlyCreditsSet }} credits.</p>
-                <p>You have {{ currentCredits }} credits.</p>
-            </div>
+            <DisplayCredits class="my-2" />
             <div class="grid grid-cols-1 gap-4 mt-2">
                 <AppButton class="font-montserrat col-span-1" :disabled="currentlyCreditsSet < 1" @click="startGame">Play</AppButton>
             </div>
@@ -23,9 +20,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
 import AppCard from '@/components/misc/AppCard.vue'
 import AppButton from '@/components/misc/AppButton.vue'
+import DisplayCredits from '@/components/game/DisplayCredits.vue'
 import PhPokerChipFill from '@/components/icons/PhPokerChipFill.vue'
 import { useAppStore } from '~/store/app'
 import { useGameStore } from '~/store/game'
@@ -37,13 +34,13 @@ const gameStore = useGameStore()
 const creditStore = useCreditStore()
 
 // Credits states
-const currentlyCreditsSet = ref(0)
 const currentCredits = computed(() => creditStore.getCredits)
+const currentlyCreditsSet = computed(() => gameStore.getPlayersBet)
 
 // Set credits if you have enough
 const setCredits = (creditsToBeSet) => {
     if (currentCredits.value >= creditsToBeSet) {
-        currentlyCreditsSet.value = creditsToBeSet
+        gameStore.setBet(creditsToBeSet)
     }
 }
 

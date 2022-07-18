@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export const useCreditStore = defineStore({
     id: 'credit-store',
     state: () => ({
-        credits: 500
+        credits: 99
     }),
     actions: {
         resetCredits() {
