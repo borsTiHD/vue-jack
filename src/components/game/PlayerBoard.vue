@@ -36,6 +36,9 @@ const { getGameRunning } = storeToRefs(gameStore)
 const playerCards = computed(() => gameStore.getPlayerCards)
 const playerSum = computed(() => gameStore.getPlayerSum)
 const playerCanHit = computed(() => gameStore.canHit)
+
+// Starting new game
+const nextGame = () => { gameStore.startGame() }
 </script>
 
 <style>
