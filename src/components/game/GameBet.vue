@@ -6,10 +6,10 @@
                 <p>Start the game after you set your bet.</p>
             </div>
             <div class="grid grid-cols-4 gap-4 my-2">
-                <AppButton class="font-montserrat col-span-1" type="secondary" :disabled="currentCredits < 10" @click="setCredits(10)">10</AppButton>
-                <AppButton class="font-montserrat col-span-1" type="secondary" :disabled="currentCredits < 25" @click="setCredits(25)">25</AppButton>
-                <AppButton class="font-montserrat col-span-1" type="secondary" :disabled="currentCredits < 50" @click="setCredits(50)">50</AppButton>
-                <AppButton class="font-montserrat col-span-1" type="secondary" :disabled="currentCredits < 100" @click="setCredits(100)">100</AppButton>
+                <PhPokerChipFill class="col-span-1" :class="currentCredits < 10 ? 'fill-gray-600' : 'fill-red-500'" :value="10" @click="setCredits(10)" />
+                <PhPokerChipFill class="col-span-1" :class="currentCredits < 25 ? 'fill-gray-600' : 'fill-green-600'" :value="25" @click="setCredits(25)" />
+                <PhPokerChipFill class="col-span-1" :class="currentCredits < 50 ? 'fill-gray-600' : 'fill-blue-500'" :value="50" @click="setCredits(50)" />
+                <PhPokerChipFill class="col-span-1" :class="currentCredits < 100 ? 'fill-gray-600' : 'fill-black'" :value="100" @click="setCredits(100)" />
             </div>
             <div class="flex flex-col items-center my-2">
                 <p>Currently set: {{ currentlyCreditsSet }} credits.</p>
@@ -26,6 +26,7 @@
 import { ref } from 'vue'
 import AppCard from '@/components/misc/AppCard.vue'
 import AppButton from '@/components/misc/AppButton.vue'
+import PhPokerChipFill from '@/components/icons/PhPokerChipFill.vue'
 import { useAppStore } from '~/store/app'
 import { useGameStore } from '~/store/game'
 import { useCreditStore } from '~/store/credits'
