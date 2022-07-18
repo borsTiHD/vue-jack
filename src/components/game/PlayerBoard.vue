@@ -19,6 +19,7 @@
 </template>
 
 <script setup>
+import { watch } from 'vue'
 import AppCard from '@/components/misc/AppCard.vue'
 import AppButton from '@/components/misc/AppButton.vue'
 import GameCard from '@/components/game/GameCard.vue'
@@ -29,12 +30,21 @@ import { useGameStore } from '~/store/game'
 const gameStore = useGameStore()
 
 // Game running state
+const gameRunning = computed(() => gameStore.getGameRunning)
 const showingResults = computed(() => gameStore.getShowResults)
 
 // Player cards + Player sum
 const playerCards = computed(() => gameStore.getPlayerCards)
 const playerSum = computed(() => gameStore.getPlayerSum)
 const playerCanHit = computed(() => gameStore.canHit)
+
+// Watcher if game is running and player can't hit anymore
+watch(playerCanHit, (newValue) => {
+    if (!newValue && gameRunning.value) {
+        // Game ends - player is equal or above 21
+        gameStore.stay()
+    }
+})
 
 // Starting new game
 const nextGame = () => { gameStore.newGame() }

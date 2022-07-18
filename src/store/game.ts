@@ -40,6 +40,11 @@ export const useGameStore = defineStore({
             // Deal two cards to the dealer
             this.dealer.cards.push(deckStore.takeCard()) // Set first card hidden in store
             this.dealer.cards.push(deckStore.flipCard(deckStore.takeCard())) // Set second card visible in store
+
+            // Checks if player has blackjack
+            if (this.getPlayerSum === 21) {
+                this.stay()
+            }
         },
         setBet(amount) {
             // Setting players bet
