@@ -7,8 +7,6 @@
                     :key="index"
                     :to="item.to"
                     class="group relative inline-block text-gray-900 dark:text-white p-2 m-0 mx-4"
-                    :class="{ 'text-2xl': menu }"
-                    @click="closeMenu"
                 >
                     {{ item.name }}<span class="w-16 h-0.5 mx-auto block absolute bottom-1 left-0 right-0 group-hover:bg-primary transition-all duration-200 group-hover:scale-x-[0.3]" />
                 </NuxtLink>
