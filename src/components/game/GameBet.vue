@@ -42,7 +42,7 @@ const currentCredits = computed(() => creditStore.getCredits)
 
 // Set credits if you have enough
 const setCredits = (creditsToBeSet) => {
-    if (currentCredits.value > creditsToBeSet) {
+    if (currentCredits.value >= creditsToBeSet) {
         currentlyCreditsSet.value = creditsToBeSet
     }
 }
