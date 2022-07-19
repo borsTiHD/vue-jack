@@ -1,5 +1,5 @@
 <template>
-    <AppCard class="mt-2">
+    <AppCard>
         <div class="flex flex-col">
             <div class="flex flex-col items-center mb-2">
                 <p class="text-4xl md:text-5xl mb-4">{{ appStore.getTitle }}</p>

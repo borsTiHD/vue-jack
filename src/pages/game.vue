@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col text-gray-900 dark:text-white">
-        <section id="game" class="flex justify-center flex-col p-4">
+        <section id="game" class="flex justify-center flex-col p-4 md:p-8">
             <!-- Modal - for game result -->
             <GameResult @next-game="nextGame" />
 
