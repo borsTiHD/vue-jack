@@ -49,6 +49,9 @@
                         <li>Possibly the features will be included in the future.</li>
                     </ul>
                 </div>
+                <div class="grid grid-cols-1 gap-4 mt-4">
+                    <NuxtLink :to="'/'" class="col-span-1"><AppButton class="font-montserrat w-full" uppercase>Go Back</AppButton></NuxtLink>
+                </div>
             </AppCard>
         </section>
     </div>
@@ -56,6 +59,7 @@
 
 <script setup>
 import AppCard from '@/components/misc/AppCard.vue'
+import AppButton from '@/components/misc/AppButton.vue'
 import { useAppStore } from '~/store/app'
 
 // Changing title
