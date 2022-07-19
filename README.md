@@ -2,9 +2,12 @@
 
 It's a simple Blackjack clone written in Vue3/Nuxt3.  
 Inspiration for the game logic (also the card images) comes from [ImKennyYip](https://github.com/ImKennyYip/black-jack).  
-However, the game logic has been adapted and is still being expanded to include a betting option.
+However, the game logic has been adapted and in the future I would like to add a multiplayer with [socket.io](socket.io).
 
-## Setup
+## ♠️ Play
+Here you can play the game: [Vue-Jack](https://vue-jack.vercel.app/)
+
+## ♥️ Setup
 
 Make sure to install the dependencies:
 
@@ -16,7 +19,7 @@ yarn install
 npm install
 ```
 
-## Development Server
+## ♦️ Development Server
 
 Start the development server on http://localhost:3000
 
@@ -24,7 +27,7 @@ Start the development server on http://localhost:3000
 npm run dev
 ```
 
-## Production
+## ♣️ Production
 
 Build the application for production:
 
@@ -37,5 +40,3 @@ Locally preview production build:
 ```bash
 npm run preview
 ```
-
-Checkout the [deployment documentation](https://v3.nuxtjs.org/guide/deploy/presets) for more information.
