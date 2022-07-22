@@ -16,7 +16,7 @@
         "preview": "nuxt preview",
         "lint:script": "eslint --ext .ts,vue --ignore-path .gitignore .",
         "test": "vitest run --dir tests",
-        "coverage": "vitest run --coverage"
+        "test:coverage": "vitest run --coverage"
     },
     "devDependencies": {
         "@fontsource/montserrat": "^4.5.11",
