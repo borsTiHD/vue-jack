@@ -11,29 +11,29 @@ describe('Credit Store Tests', async() => {
     })
 
     it('Get Default Credits', async() => {
-        const appStore = useCreditStore()
-        expect(appStore.getCredits).toBe(500)
+        const store = useCreditStore()
+        expect(store.getCredits).toBe(500)
     })
 
     it('Set Default Credits', async() => {
-        const appStore = useCreditStore()
-        appStore.resetCredits()
-        expect(appStore.getCredits).toBe(500)
+        const store = useCreditStore()
+        store.resetCredits()
+        expect(store.getCredits).toBe(500)
     })
 
     it('Add Credits', async() => {
-        const appStore = useCreditStore()
-        const defaultCredits = appStore.getCredits
+        const store = useCreditStore()
+        const defaultCredits = store.getCredits
         const randomAmount = Math.floor(Math.random() * 100)
-        appStore.addCredits(randomAmount) // Add random credits
-        expect(appStore.getCredits).toBe(defaultCredits + randomAmount) // Check if credits are added
+        store.addCredits(randomAmount) // Add random credits
+        expect(store.getCredits).toBe(defaultCredits + randomAmount) // Check if credits are added
     })
 
     it('Subtract Credits', async() => {
-        const appStore = useCreditStore()
-        const defaultCredits = appStore.getCredits
+        const store = useCreditStore()
+        const defaultCredits = store.getCredits
         const randomAmount = Math.floor(Math.random() * 100)
-        appStore.subtractCredits(randomAmount) // Subtract random credits
-        expect(appStore.getCredits).toBe(defaultCredits - randomAmount) // Check if credits are subtracted
+        store.subtractCredits(randomAmount) // Subtract random credits
+        expect(store.getCredits).toBe(defaultCredits - randomAmount) // Check if credits are subtracted
     })
 })

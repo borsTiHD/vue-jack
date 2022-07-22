@@ -11,17 +11,17 @@ describe('App Store Tests', async() => {
     })
 
     it('Get App Title', async() => {
-        const appStore = useAppStore()
-        expect(appStore.getTitle).toBe('Vue-Jack 🃏')
+        const store = useAppStore()
+        expect(store.getTitle).toBe('Vue-Jack 🃏')
     })
 
     it('Get Homepage', async() => {
-        const appStore = useAppStore()
-        expect(appStore.getHomepageUrl).toBe('https://www.borstihd.de')
+        const store = useAppStore()
+        expect(store.getHomepageUrl).toBe('https://www.borstihd.de')
     })
 
     it('Get Git Repo', async() => {
-        const appStore = useAppStore()
-        expect(appStore.getGitUrl).toBe('https://github.com/borsTiHD/vue-jack')
+        const store = useAppStore()
+        expect(store.getGitUrl).toBe('https://github.com/borsTiHD/vue-jack')
     })
 })
