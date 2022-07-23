@@ -14,6 +14,8 @@ describe('Game store tests', async() => {
         const store = useGameStore()
         store.newGame() // Resetting the game
         expect(store.getGameRunning).toBeFalsy() // Check if game is not running
+        store.setBet(10) // Setting the bet
+        expect(store.getPlayersBet).toBe(10) // Check if bet is set correctly
         store.startGame() // Start a new game
         expect(store.getGameRunning).toBeTruthy() // Check if game is running
 
