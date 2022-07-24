@@ -13,7 +13,8 @@ describe('Page store tests', async() => {
     it('check pages', async() => {
         const store = usePagesStore()
         expect(store.getPages.length).toBeGreaterThanOrEqual(0) // Check if pages is not empty
-        describe.each(store.getPages)('Check every Page', (page) => {
+        // Check every page has several properties
+        store.getPages.forEach((page) => {
             expect(page).toHaveProperty('name') // Check if page has a name
             expect(page).toHaveProperty('to') // Check if page has a to property
         })
