@@ -32,7 +32,7 @@
         "eslint": "^8.19.0",
         "eslint-plugin-vue": "^9.2.0",
         "nuxt": "3.0.0-rc.5",
-        "pinia": "^2.0.16",
+        "pinia": "^2.0.29",
         "playwright": "^1.24.0",
         "postcss-custom-properties": "^12.1.8",
         "typescript": "^4.7.4",
